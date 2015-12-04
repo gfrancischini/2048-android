@@ -56,6 +56,7 @@ public class BoardView extends RelativeLayout {
 
     public void update(Grid grid) {
         //List<Tile> tiles = grid.occupiedCells();
+        this.removeAllViews();
 
         Tile[][] cells = grid.getAllCells();
         for (int x = 0; x < grid.getSize(); x++) {
