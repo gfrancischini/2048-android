@@ -7,7 +7,6 @@
     <br.francischini.a2048.ui.views.BoardView android:id="@+id/gameboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:background="@color/container"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
