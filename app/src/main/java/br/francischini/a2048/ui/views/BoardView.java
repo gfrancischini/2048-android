@@ -2,6 +2,7 @@ package br.francischini.a2048.ui.views;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -96,11 +97,15 @@ public class BoardView extends RelativeLayout {
 
         if(tile != null) {
             tileView.setText("" + tile.getValue());
-            tileView.setBackgroundColor(getPieceColor(tile.getValue()));
+            tileView.setBackgroundResource(R.drawable.round_rect);
+            //tileView.setBackgroundColor(getPieceColor(tile.getValue()));
+            tileView.getBackground().setColorFilter(getPieceColor(tile.getValue()), PorterDuff.Mode.ADD);
         }
         else {
             tileView.setText("");
-            tileView.setBackgroundColor(getResources().getColor(R.color.piece_empty));
+            tileView.setBackgroundResource(R.drawable.round_rect);
+            //tileView.setBackgroundColor(getResources().getColor(R.color.piece_empty));
+            tileView.getBackground().setColorFilter(getResources().getColor(R.color.piece_empty), PorterDuff.Mode.ADD);
         }
         Rect tileRect = rectForCoordinate(x, y);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
