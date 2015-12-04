@@ -33,7 +33,7 @@ public class BoardView extends RelativeLayout {
     public BoardView(Context context, AttributeSet attrSet) {
         super(context, attrSet);
         tileSize = Math.round(getResources().getDimension(R.dimen.tile_size));
-        tileMargin = 10;
+        tileMargin = Math.round(getResources().getDimension(R.dimen.tile_margin));
     }
 
     @Override

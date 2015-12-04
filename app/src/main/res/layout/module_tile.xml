@@ -5,7 +5,7 @@
     android:layout_height="@dimen/tile_size" android:layout_width="@dimen/tile_size"
     android:text="2048"
     android:textStyle="bold"
-    android:textSize="17sp"
+    android:textSize="20sp"
     android:background="@drawable/round_rect">
 
 </TextView>
