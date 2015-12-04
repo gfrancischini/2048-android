@@ -387,6 +387,12 @@ public class Manager {
         return false;
     }
 
-    ;
+    /**
+     *
+     * @return the current game score
+     */
+    public int getScore() {
+        return score;
+    }
 
 }

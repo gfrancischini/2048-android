@@ -6,11 +6,90 @@
     android:layout_gravity="center"
     android:background="@color/background">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearLayout3"
+        android:layout_alignLeft="@+id/gameboard"
+        android:layout_alignStart="@+id/gameboard"
+        android:text="New Game" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gameboard"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/linearLayout2"
+        android:layout_toStartOf="@+id/linearLayout2"
+        android:background="@drawable/board_rect"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Score"
+            android:textAllCaps="true"
+            android:textColor="#BBADA4"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/scoreValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="40dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gameboard"
+        android:layout_alignEnd="@+id/gameboard"
+        android:layout_alignRight="@+id/gameboard"
+        android:background="@drawable/board_rect"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Best"
+            android:textAllCaps="true"
+            android:textColor="#BBADA4"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/bestValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="40dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
     <br.francischini.a2048.ui.views.BoardView
         android:id="@+id/gameboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
         android:background="@drawable/board_rect"></br.francischini.a2048.ui.views.BoardView>
 </RelativeLayout>

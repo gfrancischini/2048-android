@@ -1,11 +1,12 @@
 package br.francischini.a2048.ui;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import br.francischini.a2048.R;
 import br.francischini.a2048.game.Manager;
@@ -15,6 +16,8 @@ public class GameActivity extends AppCompatActivity {
     Manager manager;
     BoardView boardView;
     RelativeLayout rootRelativeLayout;
+    TextView scoreValueTextView;
+    TextView bestValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,11 @@ public class GameActivity extends AppCompatActivity {
 
         manager = new Manager(4);
 
-        boardView = (BoardView)this.findViewById(R.id.gameboard);
-        RelativeLayout rootRelativeLayout = (RelativeLayout)this.findViewById(R.id.rootRelativeLayout);
+        boardView = (BoardView) this.findViewById(R.id.gameboard);
+        rootRelativeLayout = (RelativeLayout) this.findViewById(R.id.rootRelativeLayout);
+        scoreValueTextView = (TextView) this.findViewById(R.id.scoreValueTextView);
+        bestValueTextView = (TextView) this.findViewById(R.id.bestValueTextView);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -37,26 +43,35 @@ public class GameActivity extends AppCompatActivity {
             // TODO: this is screw .. need to make it again
             // 0: up, 1: right, 2: down, 3: left
             public void onSwipeTop() {
-                manager.move(3);
-                boardView.update(manager.getGrid());
+                doPlay(3);
             }
+
             public void onSwipeRight() {
-                manager.move(2);
-                boardView.update(manager.getGrid());
+                doPlay(2);
             }
+
             public void onSwipeLeft() {
-                manager.move(0);
-                boardView.update(manager.getGrid());
+                doPlay(0);
             }
+
             public void onSwipeBottom() {
-                manager.move(1);
-                boardView.update(manager.getGrid());
+                doPlay(1);
             }
 
             public boolean onTouch(View v, MotionEvent event) {
                 return this.gestureDetector.onTouchEvent(event);
             }
         });
+
+
+    }
+
+    private void doPlay(int direction) {
+        manager.move(direction);
+        boardView.update(manager.getGrid());
+
+        scoreValueTextView.setText(String.valueOf(manager.getScore()));
+        bestValueTextView.setText(String.valueOf(manager.getScore()));
 
 
     }
