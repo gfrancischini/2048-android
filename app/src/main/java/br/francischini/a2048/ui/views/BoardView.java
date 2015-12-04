@@ -74,16 +74,33 @@ public class BoardView extends RelativeLayout {
         return new Rect(left, top, left + tileSize, top + tileSize);
     }
 
+    private int getPieceColor(int value) {
+        switch (value) {
+            case 2: return getResources().getColor(R.color.piece_2);
+            case 4: return getResources().getColor(R.color.piece_4);
+            case 8: return getResources().getColor(R.color.piece_8);
+            case 16: return getResources().getColor(R.color.piece_16);
+            case 32: return getResources().getColor(R.color.piece_32);
+            case 64: return getResources().getColor(R.color.piece_64);
+            case 128: return getResources().getColor(R.color.piece_128);
+            case 256: return getResources().getColor(R.color.piece_256);
+            case 512: return getResources().getColor(R.color.piece_512);
+            case 1024: return getResources().getColor(R.color.piece_1024);
+            case 2048: return getResources().getColor(R.color.piece_2048);
+            default: return getResources().getColor(R.color.piece_super);
+        }
+    }
+
     protected void placeTile(Tile tile, int x, int y) {
         TileView tileView = new TileView(getContext());
 
         if(tile != null) {
             tileView.setText("" + tile.getValue());
-            tileView.setBackgroundColor(Color.WHITE);
+            tileView.setBackgroundColor(getPieceColor(tile.getValue()));
         }
         else {
             tileView.setText("");
-            tileView.setBackgroundColor(Color.BLACK);
+            tileView.setBackgroundColor(getResources().getColor(R.color.piece_empty));
         }
         Rect tileRect = rectForCoordinate(x, y);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
