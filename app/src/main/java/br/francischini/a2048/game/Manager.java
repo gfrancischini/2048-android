@@ -11,12 +11,48 @@ import java.util.List;
  * Created by gabriel on 12/2/15.
  */
 public class Manager {
+
+    /**
+     * Traversals class
+     */
+    public class Traversals {
+        List<Integer> x = new ArrayList<>();
+        List<Integer> y = new ArrayList<>();
+    }
+
+    /**
+     * Board Size
+     */
     int size;
+
+    /**
+     * How many pieces the game start
+     */
     int startTiles = 2;
+
+    /**
+     *
+     */
     boolean keepPlaying;
+
+    /**
+     * Is Game Over
+     */
     boolean over;
+
+    /**
+     * Player Won
+     */
     boolean won;
+
+    /**
+     * Current player score
+     */
     int score;
+
+    /**
+     * The grid board
+     */
     Grid grid;
 
     public Manager(int size) {
@@ -28,32 +64,34 @@ public class Manager {
         return grid;
     }
 
-
-    // Restart the game
+    /**
+     * Restart the game
+     */
     public void restart() {
         //this.storageManager.clearGameState();
         //this.actuator.continueGame(); // Clear the game won/lost message
         this.setup();
     }
 
-    ;
-
-    // Keep playing after winning (allows going over 2048)
+    /**
+     * Keep playing after winning (allows going over 2048)
+     */
     public void keepPlaying() {
         this.keepPlaying = true;
         //this.actuator.continueGame(); // Clear the game won/lost message
     }
 
-    ;
-
-    // Return true if the game is lost, or has won and the user hasn't kept playing
+    /**
+     * @return true if the game is lost, or has won and the user hasn't kept playing
+     */
     public boolean isGameTerminated() {
         return this.over || (this.won && !this.keepPlaying);
     }
 
-    ;
 
-    // Set up the game
+    /**
+     * Set up the game
+     */
     public void setup() {
         /*boolean previousState = this.storageManager.getGameState();
 
@@ -89,18 +127,18 @@ public class Manager {
         this.actuate();
     }
 
-    ;
-
-    // Set up the initial tiles to start the game with
+    /**
+     * Set up the initial tiles to start the game with
+     */
     public void addStartTiles() {
         for (int i = 0; i < this.startTiles; i++) {
             this.addRandomTile();
         }
     }
 
-    ;
-
-    // Adds a tile in a random position
+    /**
+     * Adds a tile in a random position
+     */
     public void addRandomTile() {
         if (this.grid.isAnyCellAvailable()) {
             int value = Math.random() < 0.9 ? 2 : 4;
@@ -111,9 +149,9 @@ public class Manager {
         }
     }
 
-    ;
-
-    // Sends the updated grid to the actuator
+    /**
+     * Sends the updated grid to the actuator
+     */
     public void actuate() {
         /*if (this.storageManager.getBestScore() < this.score) {
             this.storageManager.setBestScore(this.score);
@@ -136,25 +174,34 @@ public class Manager {
 
     }
 
-    ;
 
-    // Save all tile positions and remove merger info
+    /**
+     * Save all tile positions and remove merger info
+     */
     public void prepareTiles() {
         this.grid.prepareTiles();
     }
 
-    ;
 
-    // Move a tile and its representation
+    /**
+     * Move a tile and its representation
+     *
+     * @param tile tile to move
+     * @param cell the new cell position
+     */
     public void moveTile(Tile tile, Tile.Position cell) {
         this.grid.cells[tile.getX()][tile.getY()] = null;
         this.grid.cells[cell.x][cell.y] = tile;
         tile.updatePosition(cell);
     }
 
-    ;
 
-    // Get the vector representing the chosen direction
+    /**
+     * Get the vector representing the chosen direction
+     *
+     * @param direction
+     * @return a point with the move direction
+     */
     public Point getVector(int direction) {
         switch (direction) {
             case 0:
@@ -171,12 +218,12 @@ public class Manager {
     }
 
 
-    public class Traversals {
-        List<Integer> x = new ArrayList<>();
-        List<Integer> y = new ArrayList<>();
-    }
-
-    // Build a list of positions to traverse in the right order
+    /**
+     * Build a list of positions to traverse in the right order
+     *
+     * @param vector the direction vector
+     * @return traversals
+     */
     public Traversals buildTraversals(Point vector) {
         Traversals traversals = new Traversals();
 
@@ -192,6 +239,11 @@ public class Manager {
         return traversals;
     }
 
+    /**
+     * @param cell
+     * @param vector the direction vector
+     * @return a pair with the farthest and next cell
+     */
     public Pair<Grid.Cell, Grid.Cell> findFarthestPosition(Grid.Cell cell, Point vector) {
         Grid.Cell previous;
 
@@ -205,14 +257,27 @@ public class Manager {
         //farthest: previous
         //next: cell
         return new Pair<>(previous, cell);
-    };
+    }
 
-    public boolean positionsEqual (Tile.Position first, Tile.Position second) {
+    ;
+
+    /**
+     * @param first  position
+     * @param second position
+     * @return if the position are equal
+     */
+    public boolean positionsEqual(Tile.Position first, Tile.Position second) {
         return first.x == second.x && first.y == second.y;
-    };
+    }
 
-    // Move tiles on the grid in the specified direction
-    public void move (int direction) {
+    ;
+
+    /**
+     * Move tiles on the grid in the specified direction
+     *
+     * @param direction direction to move the tiles
+     */
+    public void move(int direction) {
         // 0: up, 1: right, 2: down, 3: left
 
         if (this.isGameTerminated()) return; // Don't do anything if the game's over
@@ -220,16 +285,16 @@ public class Manager {
         Grid.Cell cell;
         Tile tile;
 
-        Point vector     = this.getVector(direction);
+        Point vector = this.getVector(direction);
         Traversals traversals = this.buildTraversals(vector);
-        boolean moved      = false;
+        boolean moved = false;
 
         // Save the current tile positions and remove merger information
         this.prepareTiles();
 
         // Traverse the grid in the right direction and move tiles
-        for(int x : traversals.x) {
-            for(int y : traversals.y) {
+        for (int x : traversals.x) {
+            for (int y : traversals.y) {
                 cell = new Grid.Cell(x, y);
                 tile = grid.getCellContent(x, y);
 
@@ -283,13 +348,22 @@ public class Manager {
 
     }
 
-    public boolean movesAvailable () {
+    /**
+     * @return if there is any move available
+     */
+    public boolean movesAvailable() {
         return this.grid.isAnyCellAvailable() || this.tileMatchesAvailable();
-    };
+    }
+
+    ;
 
 
-    // Check for available matches between tiles (more expensive check)
-    public boolean tileMatchesAvailable () {
+    /**
+     * Check for available matches between tiles (more expensive check)
+     *
+     * @return if there is any matches between tile available
+     */
+    public boolean tileMatchesAvailable() {
 
         Tile tile;
 
@@ -301,7 +375,7 @@ public class Manager {
                     for (int direction = 0; direction < 4; direction++) {
                         Point vector = this.getVector(direction);
                         Grid.Cell cell = new Grid.Cell(x + vector.x, y + vector.y);
-                        Tile other  = this.grid.getCellContent(cell.getX(), cell.getY());
+                        Tile other = this.grid.getCellContent(cell.getX(), cell.getY());
 
                         if (other != null && other.value == tile.value) {
                             return true; // These two tiles can be merged
@@ -310,8 +384,9 @@ public class Manager {
                 }
             }
         }
-
         return false;
-    };
+    }
+
+    ;
 
 }
