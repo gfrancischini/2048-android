@@ -32,6 +32,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         boardView.setOnTouchListener(new OnSwipeTouchListener(this) {
+            // TODO: this is screw .. need to make it again
             // 0: up, 1: right, 2: down, 3: left
             public void onSwipeTop() {
                 manager.move(3);
