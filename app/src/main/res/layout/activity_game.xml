@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootRelativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:id="@+id/rootRelativeLayout"
     android:background="@color/background">
-    <br.francischini.a2048.ui.views.BoardView android:id="@+id/gameboard"
+
+    <br.francischini.a2048.ui.views.BoardView
+        android:id="@+id/gameboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/container"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-    </br.francischini.a2048.ui.views.BoardView>
+        android:background="@drawable/board_rect"></br.francischini.a2048.ui.views.BoardView>
 </RelativeLayout>
