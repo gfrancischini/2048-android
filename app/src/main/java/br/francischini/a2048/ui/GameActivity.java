@@ -24,7 +24,7 @@ public class GameActivity extends AppCompatActivity {
         manager = new Manager(4);
 
         boardView = (BoardView)this.findViewById(R.id.gameboard);
-
+        RelativeLayout rootRelativeLayout = (RelativeLayout)this.findViewById(R.id.rootRelativeLayout);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
