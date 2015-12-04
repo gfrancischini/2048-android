@@ -73,8 +73,8 @@ public class BoardView extends RelativeLayout {
         int topPadding = ((ViewGroup) this).getPaddingTop();
         int bottomPadding = ((ViewGroup) this).getPaddingBottom();
 
-        int desiredWidth = (tileSize + tileMargin) * 4 + leftPadding + rightPadding + tileMargin * 2;
-        int desiredHeight = (tileSize + tileMargin) * 4 + topPadding + bottomPadding + tileMargin * 2;
+        int desiredWidth = (tileSize + tileMargin) * 4 + leftPadding + rightPadding + tileMargin;
+        int desiredHeight = (tileSize + tileMargin) * 4 + topPadding + bottomPadding + tileMargin;
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -162,8 +162,8 @@ public class BoardView extends RelativeLayout {
         int gameboardY = (int) Math.floor(gameboardRect.top);
         int gameboardX = (int) Math.floor(gameboardRect.left);
 
-        int top = (x * tileSize) + gameboardY + (x) * tileMargin;
-        int left = (y * tileSize) + gameboardX + (y) * tileMargin;
+        int top = (x * tileSize) + gameboardY + (x+1) * tileMargin;
+        int left = (y * tileSize) + gameboardX + (y+1) * tileMargin;
         return new Rect(left, top, left + tileSize, top + tileSize);
     }
 
@@ -362,7 +362,7 @@ public class BoardView extends RelativeLayout {
     private TileView createNewTileView(Tile tile, int x, int y) {
         // we need to create a new tile view
         TileView tileView = new TileView(getContext());
-        
+
         Rect tileRect = rectForCoordinate(x, y);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
 
