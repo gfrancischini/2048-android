@@ -7,12 +7,9 @@ import java.util.List;
  * Created by gabriel on 12/2/15.
  */
 public class Grid {
-    int size;
-
-    public int getSize() {
-        return size;
-    }
-
+    /**
+     * Class that represents a cell on the grid
+     */
     public static class Cell {
         int x;
         int y;
@@ -30,8 +27,20 @@ public class Grid {
         }
     }
 
+    /**
+     * size of the board
+     */
+    int size;
+
+    /**
+     * cell tiles of the game
+     */
     Tile[][] cells;
 
+    /**
+     * Construct an new grid
+     * @param size of the board
+     */
     public Grid(int size) {
         this.size = size;
 
@@ -39,11 +48,17 @@ public class Grid {
         this.cells = new Tile[this.size][this.size];
     }
 
+    /**
+     *
+     * @return all board cells
+     */
     public Tile[][] getAllCells() {
         return cells;
     }
 
-    // Find the a random available random position
+    /**
+     * @return a random available position
+     */
     public Cell randomAvailableCell() {
         List<Cell> cells = this.availableCells();
 
@@ -53,6 +68,10 @@ public class Grid {
         return null;
     }
 
+    /**
+     *
+     * @return a list of all the cells that are not available
+     */
     public List<Tile> occupiedCells() {
         List<Tile> occupiedCells = new ArrayList<>();
 
@@ -68,7 +87,10 @@ public class Grid {
         return occupiedCells;
     }
 
-    // List all available cells
+
+    /**
+     * @return a list of all available cells
+     */
     public List<Cell> availableCells() {
         List<Cell> availableCells = new ArrayList<>();
 
@@ -84,20 +106,40 @@ public class Grid {
         return availableCells;
     }
 
-    // Check if there are any cells available
+    /**
+     *
+     * @return if there are any cells available
+     */
     public boolean isAnyCellAvailable() {
         return this.availableCells().size() != 0;
     }
 
-    // Check if the specified cell is taken
+    /**
+     * Check if the specified cell is available
+     * @param x position on the board
+     * @param y position on the board
+     * @return if the specified cell is available
+     */
     public boolean isCellAvailable(int x, int y) {
         return !isCellOccupied(x, y);
     }
 
+    /**
+     * Check if the specified cell is taken
+     * @param x position on the board
+     * @param y position on the board
+     * @return if the specified cell is taken
+     */
     public boolean isCellOccupied(int x, int y) {
         return getCellContent(x, y) != null;
     }
 
+    /**
+     *
+     * @param x position on the board
+     * @param y position on the board
+     * @return the tile content of an cell
+     */
     public Tile getCellContent(int x, int y) {
         if(withinBounds(x, y)) {
             Tile cell = this.cells[x][y];
@@ -111,16 +153,27 @@ public class Grid {
                 y >= 0 && y < this.size;
     };
 
-    // Inserts a tile at its position
+    //
+
+    /**
+     * Inserts a tile at its position
+     * @param tile the tile to insert
+     */
     public void insertTile (Tile tile) {
         this.cells[tile.getX()][tile.getY()] = tile;
     };
 
+    /**
+     * Removes a tile at its position
+     * @param tile the tile to remove
+     */
     public void removeTile (Tile tile) {
         this.cells[tile.getX()][tile.getY()] = null;
     };
 
-    // Save all tile positions and remove merger info
+    /**
+     * Save all tile positions and remove merger info
+     */
     public void prepareTiles() {
         for (int x = 0; x < this.size; x++) {
             for (int y = 0; y < this.size; y++) {
@@ -133,6 +186,14 @@ public class Grid {
             }
         }
     };
+
+    /**
+     *
+     * @return the board size
+     */
+    public int getSize() {
+        return size;
+    }
 }
 
 
