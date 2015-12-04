@@ -97,15 +97,15 @@ public class BoardView extends RelativeLayout {
 
         if(tile != null) {
             tileView.setText("" + tile.getValue());
-            tileView.setBackgroundResource(R.drawable.round_rect);
+            //tileView.setBackgroundResource(R.drawable.round_rect);
             //tileView.setBackgroundColor(getPieceColor(tile.getValue()));
-            tileView.getBackground().setColorFilter(getPieceColor(tile.getValue()), PorterDuff.Mode.ADD);
+            tileView.setColor(getPieceColor(tile.getValue()));
         }
         else {
             tileView.setText("");
-            tileView.setBackgroundResource(R.drawable.round_rect);
+            //tileView.setBackgroundResource(R.drawable.round_rect);
             //tileView.setBackgroundColor(getResources().getColor(R.color.piece_empty));
-            tileView.getBackground().setColorFilter(getResources().getColor(R.color.piece_empty), PorterDuff.Mode.ADD);
+            tileView.setColor(getResources().getColor(R.color.piece_empty));
         }
         Rect tileRect = rectForCoordinate(x, y);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
