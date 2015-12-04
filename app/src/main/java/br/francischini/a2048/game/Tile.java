@@ -7,6 +7,11 @@ import java.util.List;
  * Created by gabriel on 12/2/15.
  */
 public class Tile {
+    private static int currentTileId = 0;
+    private static int getTileId() {
+        return ++currentTileId;
+    }
+
     public static class Position {
         int x;
         int y;
@@ -28,11 +33,12 @@ public class Tile {
     Position previousPosition;
     int value;
     List<Tile> mergedFrom;
+    int id;
 
     public Tile(int x, int y, int value) {
         this.position = new Position(x, y);
         this.value = value;
-
+        this.id = this.getTileId();
         this.previousPosition = null;
         this.mergedFrom       = null; // Tracks tiles that merged together
     }
@@ -59,4 +65,24 @@ public class Tile {
     public Position getPosition() {
         return position;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public List<Tile> getMergedFrom() {
+        return this.mergedFrom;
+    }
+
+    public Position getPreviousPosition() {
+        return this.previousPosition;
+    }
+
+    public boolean hasChangedPosition () {
+        if(this.previousPosition != null) {
+            return !(this.previousPosition.x == this.position.x && this.previousPosition.y == this.position.y);
+        }
+        return false;
+
+    };
 }

@@ -1,14 +1,16 @@
 package br.francischini.a2048.ui.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
 import java.util.List;
@@ -56,13 +58,15 @@ public class BoardView extends RelativeLayout {
 
     public void update(Grid grid) {
         //List<Tile> tiles = grid.occupiedCells();
-        this.removeAllViews();
+        //this.removeAllViews();
 
         Tile[][] cells = grid.getAllCells();
         for (int x = 0; x < grid.getSize(); x++) {
             for (int y = 0; y < grid.getSize(); y++) {
                 Tile tile = cells[x][y];
-                placeTile(tile, x, y);
+                if (tile != null) {
+                    placeTile(tile, x, y);
+                }
             }
         }
     }
@@ -71,54 +75,201 @@ public class BoardView extends RelativeLayout {
         int gameboardY = (int) Math.floor(gameboardRect.top);
         int gameboardX = (int) Math.floor(gameboardRect.left);
 
-        int top = (x * tileSize) + gameboardY + (x)*tileMargin;
-        int left = (y * tileSize) + gameboardX + (y)*tileMargin;
+        int top = (x * tileSize) + gameboardY + (x) * tileMargin;
+        int left = (y * tileSize) + gameboardX + (y) * tileMargin;
         return new Rect(left, top, left + tileSize, top + tileSize);
     }
 
     private int getPieceColor(int value) {
         switch (value) {
-            case 2: return getResources().getColor(R.color.piece_2);
-            case 4: return getResources().getColor(R.color.piece_4);
-            case 8: return getResources().getColor(R.color.piece_8);
-            case 16: return getResources().getColor(R.color.piece_16);
-            case 32: return getResources().getColor(R.color.piece_32);
-            case 64: return getResources().getColor(R.color.piece_64);
-            case 128: return getResources().getColor(R.color.piece_128);
-            case 256: return getResources().getColor(R.color.piece_256);
-            case 512: return getResources().getColor(R.color.piece_512);
-            case 1024: return getResources().getColor(R.color.piece_1024);
-            case 2048: return getResources().getColor(R.color.piece_2048);
-            default: return getResources().getColor(R.color.piece_super);
+            case 2:
+                return getResources().getColor(R.color.piece_2);
+            case 4:
+                return getResources().getColor(R.color.piece_4);
+            case 8:
+                return getResources().getColor(R.color.piece_8);
+            case 16:
+                return getResources().getColor(R.color.piece_16);
+            case 32:
+                return getResources().getColor(R.color.piece_32);
+            case 64:
+                return getResources().getColor(R.color.piece_64);
+            case 128:
+                return getResources().getColor(R.color.piece_128);
+            case 256:
+                return getResources().getColor(R.color.piece_256);
+            case 512:
+                return getResources().getColor(R.color.piece_512);
+            case 1024:
+                return getResources().getColor(R.color.piece_1024);
+            case 2048:
+                return getResources().getColor(R.color.piece_2048);
+            default:
+                return getResources().getColor(R.color.piece_super);
         }
+    }
+
+    private void animateTile(Tile tile, Animator.AnimatorListener animatorListener) {
+        TileView tileView = (TileView) this.findViewWithTag(tile.getId());
+
+
+        Rect tileRect = rectForCoordinate(tile.getX(), tile.getY());
+        ObjectAnimator animX = ObjectAnimator.ofFloat(tileView, "translationX", tileRect.left);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(tileView, "translationY", tileRect.top);
+
+        animX.start();
+        animY.start();
+
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        if (animatorListener != null) {
+            animatorSet.addListener(animatorListener);
+        }
+        animatorSet.setDuration(100);
+        animatorSet.playTogether(animX, animY);
+        animatorSet.start();
+    }
+
+    private void playNewMergedTileAnimation(TileView tileView) {
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(tileView, "scaleX", 1f);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(tileView, "scaleY", 1f);
+
+        AnimatorSet animatorSetScaleDown = new AnimatorSet();
+        animatorSetScaleDown.setDuration(50);
+        animatorSetScaleDown.playTogether(scaleDownX, scaleDownY);
+
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(tileView, "scaleX", 1.1f);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(tileView, "scaleY", 1.1f);
+
+        AnimatorSet animatorSetScaleUp = new AnimatorSet();
+        animatorSetScaleUp.setDuration(50);
+        animatorSetScaleUp.playTogether(scaleUpX, scaleUpY);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animatorSetScaleUp).before(animatorSetScaleDown);
+        animatorSet.start();
+
+    }
+
+    private void playNewTileAnimation(TileView tileView) {
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(tileView, "scaleX", 0f, 1.f);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(tileView, "scaleY", 0f, 1.f);
+        ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(tileView, View.ALPHA, 0,1);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(100);
+        animatorSet.setStartDelay(100);
+        animatorSet.playTogether(alphaAnimation, scaleUpX, scaleUpY);
+
+
+        animatorSet.start();
+    }
+
+    private void playMergeAnimation(final Tile newTile, final Tile merge1, final Tile merge2) {
+        Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                TileView tileView1 = (TileView) findViewWithTag(merge1.getId());
+                TileView tileView2 = (TileView) findViewWithTag(merge2.getId());
+
+                // apply only the first time as merged1 and merged2 can change position at the same time
+                if (tileView1 != null && tileView2 != null) {
+                    removeView(tileView2);
+                    removeView(tileView1);
+                    TileView tileView = createNewTileView(newTile, newTile.getX(), newTile.getY());
+                    addView(tileView);
+                    playNewMergedTileAnimation(tileView);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        };
+
+
+        if (merge1.hasChangedPosition()) {
+            animateTile(merge1, animatorListener);
+        }
+
+        if (merge2.hasChangedPosition()) {
+            animateTile(merge2, animatorListener);
+        }
+
     }
 
     protected void placeTile(Tile tile, int x, int y) {
+        if (tile.getMergedFrom() != null) {
+            // we are merging an tile
+            List<Tile> tiles = tile.getMergedFrom();
+
+            playMergeAnimation(tile, tiles.get(0), tiles.get(1));
+            return;
+        }
+
+        if (tile.getPreviousPosition() != null) {
+            // we need to move this tile
+            animateTile(tile, null);
+            return;
+        }
+
+
+        // check if its a new tile or we just dont need to move it
+        TileView tileView = (TileView) this.findViewWithTag(tile.getId());
+        if (tileView == null) {
+            tileView = createNewTileView(tile, x, y);
+            tileView.setAlpha(0);
+            addView(tileView);
+            playNewTileAnimation(tileView);
+        }
+    }
+
+    private TileView createNewTileView(Tile tile, int x, int y) {
+        // we need to create a new tile view
         TileView tileView = new TileView(getContext());
 
-        if(tile != null) {
+
+        if (tile != null) {
             tileView.setText("" + tile.getValue());
-            //tileView.setBackgroundResource(R.drawable.round_rect);
-            //tileView.setBackgroundColor(getPieceColor(tile.getValue()));
             tileView.setColor(getPieceColor(tile.getValue()));
-        }
-        else {
+        } else {
             tileView.setText("");
-            //tileView.setBackgroundResource(R.drawable.round_rect);
-            //tileView.setBackgroundColor(getResources().getColor(R.color.piece_empty));
             tileView.setColor(getResources().getColor(R.color.piece_empty));
         }
         Rect tileRect = rectForCoordinate(x, y);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
-        //params.topMargin = tileRect.top;
-        //params.leftMargin = tileRect.left;
-        //params.setMargins(50, 50, 50, 50);
-
+        final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
         tileView.setX(tileRect.left);
         tileView.setY(tileRect.top);
-        addView(tileView, params);
-        //tile.setImageBitmap(tileServer.serveRandomSlice());
+
+        tileView.setTag(tile.getId());
+
+
+        tileView.setLayoutParams(params);
+        return tileView;
+        /*if (delay == 0) {
+            addView(tileView, params);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    addView(tileView, params);
+                }
+            }, delay);
+        }*/
+
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -128,8 +279,8 @@ public class BoardView extends RelativeLayout {
         int topPadding = ((ViewGroup) this).getPaddingTop();
         int bottomPadding = ((ViewGroup) this).getPaddingBottom();
 
-        int desiredWidth = (tileSize + tileMargin)*4 + leftPadding + rightPadding;
-        int desiredHeight = (tileSize + tileMargin)*4 + topPadding + bottomPadding;
+        int desiredWidth = (tileSize + tileMargin) * 4 + leftPadding + rightPadding;
+        int desiredHeight = (tileSize + tileMargin) * 4 + topPadding + bottomPadding;
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -172,7 +323,7 @@ public class BoardView extends RelativeLayout {
         super.onMeasure(widthspec, heightspec);
         int wspec = MeasureSpec.makeMeasureSpec(tileSize, MeasureSpec.EXACTLY);
         int hspec = MeasureSpec.makeMeasureSpec(tileSize, MeasureSpec.EXACTLY);
-        for(int i=0; i<getChildCount(); i++){
+        for (int i = 0; i < getChildCount(); i++) {
             View v = getChildAt(i);
             v.measure(wspec, hspec);
         }

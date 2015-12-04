@@ -127,6 +127,7 @@ public class Grid {
                 Tile tile = cells[x][y];
                 if(tile != null) {
                     tile.mergedFrom = null;
+                    tile.previousPosition = null;
                     tile.savePosition();
                 }
             }
