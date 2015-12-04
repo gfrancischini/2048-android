@@ -41,8 +41,21 @@ public class BoardView extends RelativeLayout {
      */
     int tileMargin;
 
+    /**
+     * Number of columns
+     */
     int numOfColumns = 4;
+
+    /**
+     * Number of lines
+     */
     int numOfLines = 4;
+
+    /**
+     * Background tile cell
+     */
+    RelativeLayout backgroundRelativeLayout;
+
 
     /**
      * Construct an new board view
@@ -60,8 +73,9 @@ public class BoardView extends RelativeLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (!boardCreated) {
-            determineGameboardSizes();
             boardCreated = true;
+            calculateGameBoardSize();
+            createBackgroundCell();
         }
     }
 
@@ -126,12 +140,36 @@ public class BoardView extends RelativeLayout {
     /**
      * Calculate the board size
      */
-    protected void determineGameboardSizes() {
+    protected void calculateGameBoardSize() {
         int gameboardWidth = (tileSize + tileMargin) * 4;
         int gameboardHeight = (tileSize + tileMargin) * 4;
         int gameboardTop = 0;
         int gameboardLeft = 0;
         gameboardRect = new RectF(gameboardLeft, gameboardTop, gameboardLeft + gameboardWidth, gameboardTop + gameboardHeight);
+    }
+
+    private void createBackgroundCell() {
+        this.backgroundRelativeLayout = new RelativeLayout(this.getContext());
+        for (int i = 0; i < numOfColumns; i++) {
+            for (int j = 0; j < numOfLines; j++) {
+                TileView tileView = new TileView(getContext());
+                Rect tileRect = rectForCoordinate(i, j);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(tileSize, tileSize);
+                tileView.setLayoutParams(params);
+                tileView.setX(tileRect.left);
+                tileView.setY(tileRect.top);
+                tileView.setColor(getResources().getColor(R.color.piece_empty));
+                tileView.setText("");
+                backgroundRelativeLayout.addView(tileView);
+            }
+        }
+        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.backgroundRelativeLayout.setLayoutParams(params);
+        this.addView(backgroundRelativeLayout);
+    }
+
+    private void addTile(TileView tileView) {
+        this.addView(tileView);
     }
 
     /**
@@ -162,8 +200,8 @@ public class BoardView extends RelativeLayout {
         int gameboardY = (int) Math.floor(gameboardRect.top);
         int gameboardX = (int) Math.floor(gameboardRect.left);
 
-        int top = (x * tileSize) + gameboardY + (x+1) * tileMargin;
-        int left = (y * tileSize) + gameboardX + (y+1) * tileMargin;
+        int top = (x * tileSize) + gameboardY + (x + 1) * tileMargin;
+        int left = (y * tileSize) + gameboardX + (y + 1) * tileMargin;
         return new Rect(left, top, left + tileSize, top + tileSize);
     }
 
@@ -288,7 +326,7 @@ public class BoardView extends RelativeLayout {
                     removeView(tileView2);
                     removeView(tileView1);
                     TileView tileView = createNewTileView(newTile, newTile.getX(), newTile.getY());
-                    addView(tileView);
+                    addTile(tileView);
                     playNewMergedTileAnimation(tileView);
                 }
             }
@@ -346,7 +384,7 @@ public class BoardView extends RelativeLayout {
             //this is a new tile
             tileView = createNewTileView(tile, x, y);
             tileView.setAlpha(0);
-            addView(tileView);
+            addTile(tileView);
             playNewTileAnimation(tileView);
         }
     }
