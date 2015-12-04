@@ -30,7 +30,7 @@ public class TileView extends RelativeLayout {
     }
 
     public void setColor(int color) {
-        textView.getBackground().setColorFilter(color, PorterDuff.Mode.ADD);
+        textView.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
     }
 
 }
