@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
+    android:id="@+id/rootRelativeLayout"
     android:background="@color/background">
     <br.francischini.a2048.ui.views.BoardView android:id="@+id/gameboard"
         android:layout_width="wrap_content"

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import br.francischini.a2048.R;
 import br.francischini.a2048.game.Manager;
@@ -13,6 +14,7 @@ import br.francischini.a2048.ui.views.BoardView;
 public class GameActivity extends AppCompatActivity {
     Manager manager;
     BoardView boardView;
+    RelativeLayout rootRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class GameActivity extends AppCompatActivity {
         }, 2000);
 
 
-        boardView.setOnTouchListener(new OnSwipeTouchListener(this) {
+        rootRelativeLayout.setOnTouchListener(new OnSwipeTouchListener(this) {
             // TODO: this is screw .. need to make it again
             // 0: up, 1: right, 2: down, 3: left
             public void onSwipeTop() {
