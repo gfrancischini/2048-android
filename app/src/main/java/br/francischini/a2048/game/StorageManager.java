@@ -10,6 +10,9 @@ public class StorageManager {
     private static final String PREF_STRING_BEST_SCORE = "pref_string_best_score";
     private static final String PREF_STRING_GAME_STATE = "pref_string_game_state";
 
+    /**
+     * Game state class
+     */
     public static class GameState {
         Grid grid;
         int score;
@@ -26,18 +29,34 @@ public class StorageManager {
         }
     }
 
+    /**
+     * save the current game score as the best one
+     *
+     * @param bestScore
+     */
     public void updateBestScore(int bestScore) {
         Prefs.putInt(PREF_STRING_BEST_SCORE, bestScore);
     }
 
+    /**
+     * @return game best score
+     */
     public int getBestScore() {
         return Prefs.getInt(PREF_STRING_BEST_SCORE, 0);
     }
 
+    /**
+     * Clear game state
+     */
     public void clearGameState() {
         Prefs.remove(PREF_STRING_GAME_STATE);
     }
 
+    /**
+     * Save the current game state
+     *
+     * @param manager the game manager
+     */
     public void setGameState(Manager manager) {
         Gson gson = new Gson();
 
@@ -46,7 +65,9 @@ public class StorageManager {
         Prefs.putString(PREF_STRING_GAME_STATE, jsonGameState);
     }
 
-
+    /**
+     * @return the saved game staste
+     */
     public GameState getGameState() {
         Gson gson = new Gson();
         String jsonGrid = Prefs.getString(PREF_STRING_GAME_STATE, null);
