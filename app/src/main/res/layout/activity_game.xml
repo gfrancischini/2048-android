@@ -10,19 +10,21 @@
         android:id="@+id/newGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout3"
+        android:layout_alignBottom="@+id/linearLayoutScore"
         android:layout_alignLeft="@+id/gameboard"
         android:layout_alignStart="@+id/gameboard"
+        android:background="@drawable/board_rect"
+        android:textColor="@android:color/white"
         android:text="New Game" />
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayoutScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/gameboard"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/linearLayout2"
-        android:layout_toStartOf="@+id/linearLayout2"
+        android:layout_toLeftOf="@+id/linearLayoutBestScore"
+        android:layout_toStartOf="@+id/linearLayoutBestScore"
         android:background="@drawable/board_rect"
         android:gravity="center"
         android:orientation="vertical"
@@ -51,7 +53,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutBestScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/gameboard"
