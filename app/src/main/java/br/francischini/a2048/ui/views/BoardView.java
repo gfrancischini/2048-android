@@ -190,6 +190,26 @@ public class BoardView extends RelativeLayout {
     }
 
     /**
+     * Create a new board game
+     *
+     * @param grid the grid with tiles
+     */
+    public void createGameTiles(Grid grid) {
+        this.removeAllViews();
+        createBackgroundCell();
+        Tile[][] cells = grid.getAllCells();
+        for (int x = 0; x < grid.getSize(); x++) {
+            for (int y = 0; y < grid.getSize(); y++) {
+                Tile tile = cells[x][y];
+                if (tile != null) {
+                    TileView tileView = this.createNewTileView(tile, x, y);
+                    addTile(tileView);
+                }
+            }
+        }
+    }
+
+    /**
      * Get the coordinate of an tile
      *
      * @param x tile position

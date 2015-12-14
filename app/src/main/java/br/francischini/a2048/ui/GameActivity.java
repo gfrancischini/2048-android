@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ public class GameActivity extends AppCompatActivity {
     RelativeLayout rootRelativeLayout;
     TextView scoreValueTextView;
     TextView bestValueTextView;
+    Button newGameButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,13 @@ public class GameActivity extends AppCompatActivity {
         rootRelativeLayout = (RelativeLayout) this.findViewById(R.id.rootRelativeLayout);
         scoreValueTextView = (TextView) this.findViewById(R.id.scoreValueTextView);
         bestValueTextView = (TextView) this.findViewById(R.id.bestValueTextView);
+        newGameButton = (Button) this.findViewById(R.id.newGameButton);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                boardView.update(manager.getGrid());
+                boardView.createGameTiles(manager.getGrid());
+                updateScores();
             }
         }, 2000);
 
@@ -64,15 +68,24 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manager.restart();
+                boardView.createGameTiles(manager.getGrid());
+            }
+        });
+
     }
 
     private void doPlay(int direction) {
         manager.move(direction);
         boardView.update(manager.getGrid());
+        updateScores();
+    }
 
+    private void updateScores() {
         scoreValueTextView.setText(String.valueOf(manager.getScore()));
-        bestValueTextView.setText(String.valueOf(manager.getScore()));
-
-
+        bestValueTextView.setText(String.valueOf(manager.getBestScore()));
     }
 }

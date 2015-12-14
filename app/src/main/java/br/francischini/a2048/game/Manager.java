@@ -21,6 +21,11 @@ public class Manager {
     }
 
     /**
+     *
+     */
+    StorageManager storageManager;
+
+    /**
      * Board Size
      */
     int size;
@@ -57,6 +62,7 @@ public class Manager {
 
     public Manager(int size) {
         this.size = size;
+        this.storageManager = new StorageManager();
         this.setup();
     }
 
@@ -68,7 +74,7 @@ public class Manager {
      * Restart the game
      */
     public void restart() {
-        //this.storageManager.clearGameState();
+        this.storageManager.clearGameState();
         //this.actuator.continueGame(); // Clear the game won/lost message
         this.setup();
     }
@@ -93,36 +99,25 @@ public class Manager {
      * Set up the game
      */
     public void setup() {
-        /*boolean previousState = this.storageManager.getGameState();
+        StorageManager.GameState previousState = this.storageManager.getGameState();
 
         // Reload the game from a previous game if present
-        if (previousState) {
-            this.grid        = new Grid(previousState.grid.size,
-                    previousState.grid.cells); // Reload grid
-            this.score       = previousState.score;
-            this.over        = previousState.over;
-            this.won         = previousState.won;
+        if (previousState != null) {
+            this.grid = previousState.grid;
+            this.score = previousState.score;
+            this.over = previousState.isGameOver;
+            this.won = previousState.isWon;
             this.keepPlaying = previousState.keepPlaying;
         } else {
-            this.grid        = new Grid(this.size);
-            this.score       = 0;
-            this.over        = false;
-            this.won         = false;
+            this.grid = new Grid(this.size);
+            this.score = 0;
+            this.over = false;
+            this.won = false;
             this.keepPlaying = false;
 
             // Add the initial tiles
             this.addStartTiles();
-        }*/
-
-        this.grid = new Grid(this.size);
-        this.score = 0;
-        this.over = false;
-        this.won = false;
-        this.keepPlaying = false;
-
-        // Add the initial tiles
-        this.addStartTiles();
-
+        }
         // Update the actuator
         this.actuate();
     }
@@ -153,18 +148,18 @@ public class Manager {
      * Sends the updated grid to the actuator
      */
     public void actuate() {
-        /*if (this.storageManager.getBestScore() < this.score) {
-            this.storageManager.setBestScore(this.score);
+        if (this.storageManager.getBestScore() < this.score) {
+            this.storageManager.updateBestScore(this.score);
         }
 
         // Clear the state when the game is over (game over only, not win)
         if (this.over) {
             this.storageManager.clearGameState();
         } else {
-            this.storageManager.setGameState(this.serialize());
+            this.storageManager.setGameState(this);
         }
 
-        this.actuator.actuate(this.grid, {
+        /*this.actuator.actuate(this.grid, {
                 score:      this.score,
                 over:       this.over,
                 won:        this.won,
@@ -388,11 +383,37 @@ public class Manager {
     }
 
     /**
-     *
      * @return the current game score
      */
     public int getScore() {
         return score;
     }
 
+    /**
+     * @return the best game score
+     */
+    public int getBestScore() {
+        return this.storageManager.getBestScore();
+    }
+
+    /**
+     * @return if player won the game
+     */
+    public boolean isWon() {
+        return won;
+    }
+
+    /**
+     * @return if the game is over
+     */
+    public boolean isOver() {
+        return over;
+    }
+
+    /**
+     * @return if keep playing
+     */
+    public boolean isKeepPlaying() {
+        return keepPlaying;
+    }
 }

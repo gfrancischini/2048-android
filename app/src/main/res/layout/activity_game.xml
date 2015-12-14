@@ -7,6 +7,7 @@
     android:background="@color/background">
 
     <Button
+        android:id="@+id/newGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/linearLayout3"
