@@ -1,8 +1,13 @@
 package br.francischini.a2048.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -87,5 +92,53 @@ public class GameActivity extends AppCompatActivity {
     private void updateScores() {
         scoreValueTextView.setText(String.valueOf(manager.getScore()));
         bestValueTextView.setText(String.valueOf(manager.getBestScore()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_activity_menu, menu);
+
+        //return true so that the menu pop up is opened
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                showAboutDialog();
+                break;
+            case R.id.howToPlay:
+                showHowToPlayDialog();
+                break;
+        }
+        return true;
+    }
+
+    private void showAboutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("About")
+                .setMessage(getString(R.string.about_dialog))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+    private void showHowToPlayDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("How To Play")
+                .setMessage(getString(R.string.how_to_play_dialog))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
     }
 }

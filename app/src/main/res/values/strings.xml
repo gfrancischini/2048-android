@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">2048</string>
+    <string name="created_by">Created by <b>Gabriel Francischini</b>. Based on Gabriele Cirulli JavaScript source code.</string>
+    <string name="git_url">https://github.com/gfrancischini/2048-android</string>
+    <string name="about_dialog">Created by <b>Gabriel Francischini</b>. Based on Gabriele Cirulli JavaScript source code.\nYou can download the source code at https://github.com/gfrancischini/2048-android</string>
+    <string name="how_to_play_dialog">Slide on screen to move the tiles. When two tiles with the same number touch, they merge into one!</string>
+
 </resources>

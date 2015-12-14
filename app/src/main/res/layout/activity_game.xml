@@ -14,8 +14,8 @@
         android:layout_alignLeft="@+id/gameboard"
         android:layout_alignStart="@+id/gameboard"
         android:background="@drawable/board_rect"
-        android:textColor="@android:color/white"
-        android:text="New Game" />
+        android:text="New Game"
+        android:textColor="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/linearLayoutScore"
@@ -95,4 +95,33 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="10dp"
         android:background="@drawable/board_rect"></br.francischini.a2048.ui.views.BoardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:text="@string/created_by"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignEnd="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/linearLayoutBestScore"
+        android:layout_alignLeft="@+id/gameboard"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/linearLayoutBestScore"
+        android:layout_alignStart="@+id/gameboard"
+        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:text="@string/git_url"
+        android:id="@+id/textView2" />
+
 </RelativeLayout>
