@@ -1,6 +1,9 @@
 # 2048-android
 This is a fully android 2048 version
 
+
+Install Android Version - https://play.google.com/store/apps/details?id=br.francischini.a2048
+
 2048 android open source full android xml java
 
 
