@@ -1,6 +1,8 @@
 # 2048-android
 This is a fully android 2048 version
 
+2048 android open source full android xml java
+
 
 The MIT License (MIT)
 
